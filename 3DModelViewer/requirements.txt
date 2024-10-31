@@ -1,4 +1,2 @@
-streamlit
-plotly
-pyntcloud
-pandas
+streamlit==1.22.0
+numpy==1.24.3
