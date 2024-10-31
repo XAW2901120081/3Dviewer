@@ -7,7 +7,7 @@ import pandas as pd
 st.title("可旋转的 3D 模型查看器")
 
 # 加载 PLY 文件
-ply_file = r'D:\FILE\倾斜摄影实践\3DModelViewer\model_house.ply'
+ply_file = '3DModelViewer/model_house.ply'
 
 # 读取 .ply 文件到 PyntCloud 对象
 cloud = PyntCloud.from_file(ply_file)
