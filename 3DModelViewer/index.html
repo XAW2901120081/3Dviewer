@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D 模型查看器</title>
+    <style>
+        body { margin: 0; }
+        canvas { display: block; }
+    </style>
+    <script type="module">
+        import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.152.0/build/three.module.js';
+        import { PLYLoader } from 'https://cdn.jsdelivr.net/npm/three@0.152.0/examples/jsm/loaders/PLYLoader.js';
+
+        let scene, camera, renderer;
+
+        function init() {
+            // 创建场景
+            scene = new THREE.Scene();
+            camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            renderer = new THREE.WebGLRenderer();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            document.body.appendChild(renderer.domElement);
+
+            // 设置相机位置
+            camera.position.z = 5;
+
+            // 加载 PLY 模型
+            const loader = new PLYLoader();
+            loader.load('model_house.ply', function (geometry) {
+                console.log('模型加载成功'); // 调试信息
+                const material = new THREE.MeshStandardMaterial({ color: 0x00ff00 });
+                const mesh = new THREE.Mesh(geometry, material);
+                scene.add(mesh);
+            }, undefined, function (error) {
+                console.error('模型加载失败：', error); // 错误信息输出
+            });
+
+            // 添加光源
+            const light = new THREE.DirectionalLight(0xffffff, 1);
+            light.position.set(1, 1, 1).normalize();
+            scene.add(light);
+
+            // 响应窗口大小变化
+            window.addEventListener('resize', onWindowResize, false);
+            animate();
+        }
+
+        function onWindowResize() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+            renderer.render(scene, camera);
+        }
+
+        init();
+    </script>
+</head>
+<body>
+    <h1>3D 模型查看器</h1>
+</body>
+</html>
